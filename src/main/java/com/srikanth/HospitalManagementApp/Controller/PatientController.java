@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 public class PatientController {
 
@@ -31,9 +28,7 @@ public class PatientController {
 
     @RequestMapping(value = "/addPatient", method = RequestMethod.POST)
     public ModelAndView addPatient(@ModelAttribute("patient") Patient patient, ModelAndView modelAndView) {
-        patientService.registerPatient(patient);
-
-        modelAndView.addObject("patient", patient);
+        modelAndView.addObject("patient", patientService.registerPatient(patient));
         modelAndView.setViewName("DisplayPatientDetails");
         return modelAndView;
     }
@@ -41,35 +36,23 @@ public class PatientController {
     @RequestMapping("/patientLogin")
     public ModelAndView patientLogin(HttpServletRequest req, ModelAndView modelAndView) {
         Integer pid = Integer.parseInt(req.getParameter("pid"));
-
         String pin = req.getParameter("pin");
-
         int status = patientService.verifyPatient(pid, pin);
 
         if (status == 1) {
             modelAndView.addObject("pid", pid);
             modelAndView.setViewName("patientFeatures");
-            return modelAndView;
 
         } else {
-            modelAndView.setViewName("patientFeatures");
-            return modelAndView;
+            modelAndView.setViewName("errorLogin");
         }
-
-
+        return modelAndView;
     }
 
     @RequestMapping("/getPatientsList")
     public String getListOfPatients(Model model) {
-        List<Patient> list = new ArrayList();
-
-        list = patientService.getListOfPatients();
-
-        model.addAttribute("list", list);
-
+        model.addAttribute("list", patientService.getListOfPatients());
         return "patientsDetails";
-
-
     }
 
     @RequestMapping(value = "/bookDoctor", method = RequestMethod.POST)
@@ -92,21 +75,15 @@ public class PatientController {
     @RequestMapping("/viewPatientProfile")
     public String viewPatientProfileBYId(HttpServletRequest req, Model model) {
         Integer pid = Integer.parseInt(req.getParameter("pid"));
-
         Patient patient = patientService.getPatientObject(pid);
-
         model.addAttribute("patient", patient);
-
         return "PatientDetailsById";
-
     }
 
     @RequestMapping(value = "/updateOrDelete", method = RequestMethod.POST)
     public String performUpdateOrDelete(HttpServletRequest req, Model model) {
         Integer pid = Integer.parseInt(req.getParameter("pid"));
-
         String action = req.getParameter("action");
-
         if (action.equals("update")) {
             Patient patient = patientService.getPatientObject(pid);
             model.addAttribute("patient", patient);
@@ -115,21 +92,14 @@ public class PatientController {
             patientService.deletePatientProfile(pid);
             return "patDelSuccess";
         }
-
-
     }
 
     @RequestMapping(value = "/updatePatient", method = RequestMethod.POST)
     public String updatePatient(HttpServletRequest req, @ModelAttribute("patient") Patient patient, Model model) {
-
-        Integer pid = Integer.parseInt(req.getParameter("pid"));
-
+        int pid = Integer.parseInt(req.getParameter("pid"));
         patient.setPid(pid);
-        patientService.updatePatientProfile(patient);
-        model.addAttribute("patient", patient);
+        model.addAttribute("patient", patientService.updatePatientProfile(patient));
         return "PatientDetailsById";
-
     }
-
 
 }

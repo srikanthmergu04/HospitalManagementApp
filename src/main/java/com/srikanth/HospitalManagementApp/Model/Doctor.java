@@ -36,8 +36,8 @@ public class Doctor {
 
     @ManyToMany(cascade = CascadeType.ALL, targetEntity = Patient.class, fetch = FetchType.LAZY)
     @JoinTable(name = "Doctor_Patient",
-            joinColumns = {@JoinColumn(name = "Doctor_id")},
-            inverseJoinColumns = {@JoinColumn(name = "Patient_id")}
+            joinColumns = {@JoinColumn(name = "doctorId")},
+            inverseJoinColumns = {@JoinColumn(name = "patientId")}
     )
     private Set<Patient> patList = null;
 

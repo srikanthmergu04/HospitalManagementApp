@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PatientService {
 
-    void registerPatient(Patient patient);
+    Patient registerPatient(Patient patient);
 
     int verifyPatient(Integer pid, String pin);
 
@@ -19,5 +19,5 @@ public interface PatientService {
 
     void deletePatientProfile(Integer pid);
 
-    int updatePatientProfile(Patient patient);
+    Patient updatePatientProfile(Patient patient);
 }

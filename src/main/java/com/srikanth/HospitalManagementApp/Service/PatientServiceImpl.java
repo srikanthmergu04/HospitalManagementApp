@@ -1,80 +1,66 @@
 package com.srikanth.HospitalManagementApp.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.srikanth.HospitalManagementApp.Dao.PatientDao;
+import com.srikanth.HospitalManagementApp.Model.Doctor;
 import com.srikanth.HospitalManagementApp.Model.Patient;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.srikanth.HospitalManagementApp.Repository.DoctorRepository;
+import com.srikanth.HospitalManagementApp.Repository.PatientRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.util.List;
 
 @Service
 public class PatientServiceImpl implements PatientService {
 
-    @Autowired
-    PatientDao patientDao;
+    private final PatientRepository patientRepository;
+    private final DoctorRepository doctorRepository;
 
-    public void registerPatient(Patient patient) {
-        // TODO Auto-generated method stub
+    public PatientServiceImpl(PatientRepository patientRepository, DoctorRepository doctorRepository) {
+        this.patientRepository = patientRepository;
+        this.doctorRepository = doctorRepository;
+    }
 
-        patientDao.registerPatient(patient);
-
+    public Patient registerPatient(Patient patient) {
+        return patientRepository.save(patient);
     }
 
     public int verifyPatient(Integer pid, String pin) {
-        // TODO Auto-generated method stub
+        Patient patient = patientRepository.findById(pid).orElse(null);
 
-        Patient patient = patientDao.getPatientObject(pid);
-
-        String password = patient.getPin();
-
-        if (pin.equals(password)) {
+        if (ObjectUtils.isEmpty(patient)) {
+            return -1;
+        }
+        if (pin.equals(patient.getPin())) {
             return 1;
         } else {
             return -1;
         }
-
-
     }
 
     public List<Patient> getListOfPatients() {
-        // TODO Auto-generated method stub
-
-        List<Patient> list = new ArrayList();
-
-        list = patientDao.getListOfPatients();
-
-        return list;
+        return patientRepository.findAll();
     }
 
     public void selectDoctor(Integer pid, Integer did) {
-        // TODO Auto-generated method stub
+        Patient patient = patientRepository.findById(pid).orElse(null);
+        Doctor doctor = doctorRepository.findById(did).orElse(null);
 
-        patientDao.selectDoctor(pid, did);
-
+        if (!ObjectUtils.isEmpty(doctor)) {
+            doctor.getPatList().add(patient);
+            doctorRepository.save(doctor);
+        }
     }
 
     public Patient getPatientObject(Integer pid) {
-        // TODO Auto-generated method stub
-
-        Patient patient = patientDao.getPatientObject(pid);
-
-        return patient;
+        return patientRepository.findById(pid).orElse(null);
     }
 
     public void deletePatientProfile(Integer pid) {
-        // TODO Auto-generated method stub
-
-        patientDao.deletePatientProfile(pid);
-
+        patientRepository.deleteById(pid);
     }
 
-    public int updatePatientProfile(Patient patient) {
-        // TODO Auto-generated method stub
-
-        patientDao.updatePatientProfile(patient);
-
-        return 0;
+    public Patient updatePatientProfile(Patient patient) {
+        return patientRepository.save(patient);
     }
 
 }

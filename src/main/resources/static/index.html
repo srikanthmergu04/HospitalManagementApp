@@ -6,47 +6,57 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f2f2f2;
             margin: 0;
             padding: 0;
         }
 
         .container {
-            width: 60%;
-            margin: 50px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: auto;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+
+        .option {
             background-color: #fff;
-            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .option:hover {
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
             text-align: center;
         }
 
         h2 {
             color: #333;
-            margin-bottom: 30px;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .button-container form {
-            margin: 0 10px;
+            margin-bottom: 10px;
         }
 
         input[type="submit"] {
-            background-color: #4caf50;
-            color: #fff;
+            background-color: #4CAF50;
+            color: white;
             padding: 10px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
             font-size: 16px;
         }
 
@@ -56,29 +66,39 @@
     </style>
 </head>
 <body>
+<h1>Welcome to Hospital Management Application</h1>
 <div class="container">
-    <h2>Welcome to Hospital Management Application</h2>
-
-    <div class="button-container">
-        <form action="registerPatient">
-            <input type="submit" value="Patient Registration">
-        </form>
-
-        <form action="registerDoctor">
-            <input type="submit" value="Doctor Registration">
-        </form>
-
-        <form action="patientLogin.html">
-            <input type="submit" value="Patient Login">
-        </form>
-
-        <form action="doctorLogin.html">
-            <input type="submit" value="Doctor Login">
-        </form>
-
-        <form action="adminLogin.html">
-            <input type="submit" value="Admin Login">
-        </form>
+    <div class="options">
+        <div class="option">
+            <h2>Patient Registration</h2>
+            <form action="registerPatient">
+                <input type="submit" value="Patient Registration">
+            </form>
+        </div>
+        <div class="option">
+            <h2>Doctor Registration</h2>
+            <form action="registerDoctor">
+                <input type="submit" value="Doctor Registration">
+            </form>
+        </div>
+        <div class="option">
+            <h2>Patient Login</h2>
+            <form action="patientLogin.html">
+                <input type="submit" value="Patient Login">
+            </form>
+        </div>
+        <div class="option">
+            <h2>Doctor Login</h2>
+            <form action="doctorLogin.html">
+                <input type="submit" value="Doctor Login">
+            </form>
+        </div>
+        <div class="option">
+            <h2>Admin Login</h2>
+            <form action="adminLogin.html">
+                <input type="submit" value="Admin Login">
+            </form>
+        </div>
     </div>
 </div>
 </body>

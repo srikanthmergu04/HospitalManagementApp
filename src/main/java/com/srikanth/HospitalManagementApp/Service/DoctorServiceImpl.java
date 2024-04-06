@@ -1,74 +1,55 @@
 package com.srikanth.HospitalManagementApp.Service;
 
-import java.util.ArrayList;
+import com.srikanth.HospitalManagementApp.Model.Doctor;
+import com.srikanth.HospitalManagementApp.Model.Patient;
+import com.srikanth.HospitalManagementApp.Repository.DoctorRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.srikanth.HospitalManagementApp.Dao.DoctorDao;
-import com.srikanth.HospitalManagementApp.Model.Doctor;
-import com.srikanth.HospitalManagementApp.Model.Patient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
-    @Autowired
-    DoctorDao doctorDao;
+    private final DoctorRepository doctorRepository;
 
-    public void registerDoctor(Doctor doctor) {
-        // TODO Auto-generated method stub
-
-        doctorDao.registerDoctor(doctor);
-
+    public DoctorServiceImpl(DoctorRepository doctorRepository) {
+        this.doctorRepository = doctorRepository;
     }
 
-    public int verifyDoctor(Integer pid, String pin) {
-        // TODO Auto-generated method stub
+    public Doctor registerDoctor(Doctor doctor) {
+        return doctorRepository.save(doctor);
+    }
 
-        Doctor doctor = doctorDao.getDoctorObject(pid);
+    public int verifyDoctor(Integer did, String pin) {
+        Doctor doctor = doctorRepository.findById(did).orElse(null);
 
-        String password = doctor.getPin();
-
-        if (pin.equals(password)) {
+        if (ObjectUtils.isEmpty(doctor)) {
+            return -1;
+        }
+        if (pin.equals(doctor.getPin())) {
             return 1;
         } else {
             return -1;
         }
-
-
     }
 
     public List<Doctor> getDoctorsBySpecialization(String specialization) {
-        // TODO Auto-generated method stub
-
-        List<Doctor> list = doctorDao.getDoctorsBySpecialization(specialization);
-
-        return list;
+        return doctorRepository.findAll().stream().filter(doctor -> doctor.getSpecialization().equals(specialization)).toList();
     }
 
     public List<Doctor> getListOfDoctors() {
-        // TODO Auto-generated method stub
-
-        List<Doctor> list = new ArrayList();
-
-        list = doctorDao.getListOfDoctors();
-
-        return list;
+        return doctorRepository.findAll();
     }
 
     public Set<Patient> getPatientsAppointmentsList(int did) {
-        // TODO Auto-generated method stub
-
-        Doctor doctor = doctorDao.getDoctorObject(did);
-
-        Set<Patient> list = new HashSet<Patient>();
-
-        list = doctor.getPatList();
-
-
-        return list;
+        Doctor doctor = doctorRepository.findById(did).orElse(null);
+        if (ObjectUtils.isEmpty(doctor)) {
+            return new HashSet<>();
+        }
+        return doctor.getPatList();
     }
 
 }

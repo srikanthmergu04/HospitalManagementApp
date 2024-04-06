@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface DoctorService {
 
-    void registerDoctor(Doctor doctor);
+    Doctor registerDoctor(Doctor doctor);
 
     int verifyDoctor(Integer pid, String pin);
 
