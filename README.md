@@ -28,6 +28,11 @@ To use the application, follow these steps:
 - H2 Database (In-memory)
 - HTML (frontend)
 
+### Admin Credentials
+
+- Username: admin
+- Password: admin
+
 ---
 
 ![hospital-management-application.png](app-screenshots/hospital-management-application.png)
